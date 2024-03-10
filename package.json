@@ -95,8 +95,7 @@
     "use-resize-observer": "^6.1.0",
     "webpack": "^4.46.0",
     "webpack-dev-middleware": "^3.7.3",
-    "webpack-hot-middleware": "^2.25.0",
-    "@primer/octicons-react": "^11.3.0"
+    "webpack-hot-middleware": "^2.25.0"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^11.1.0",
