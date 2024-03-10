@@ -13,10 +13,11 @@ module.exports = function ({ adminMeta, adminViews, entry, outputPath }) {
     chunksSortMode: "none",
     scriptLoading: "defer",
   });
+
   const environmentPlugin = new webpack.DefinePlugin({
     ENABLE_DEV_FEATURES: enableDevFeatures,
     IS_PUBLIC_BUNDLE: entry === "public",
-    KEYSTONE_ADMIN_META: JSON.stringify(adminMeta),
+    OCOP_ADMIN_META: JSON.stringify(adminMeta),
   });
 
   const rules = [
@@ -59,10 +60,16 @@ module.exports = function ({ adminMeta, adminViews, entry, outputPath }) {
     test: /FIELD_TYPES/,
     use: [
       {
-        loader: "@ocop/field-views-loader",
+        loader: "@ocopjs/field-views-loader",
         options: { pages, hooks, listViews },
       },
     ],
+  });
+
+  rules.push({
+    test: /\.mjs$/,
+    include: /node_modules/,
+    type: "javascript/auto",
   });
 
   const entryPath = `./${entry}.js`;

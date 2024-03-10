@@ -1,15 +1,14 @@
-/* global KEYSTONE_ADMIN_META */
+/* global OCOP_ADMIN_META */
 
 import List from "../classes/List";
 import { preloadViews, readViews, views } from "../FIELD_TYPES";
-
 import React, { createContext, useContext } from "react";
 
 const { __pages__: pageViews, __hooks__: hookView, ...listViews } = views;
 
 // TODO: Pull this off `window.X` to support server side permission queries
 const {
-  headless,
+  headless = [],
   appId,
   pageId,
   authService,
@@ -24,7 +23,7 @@ const {
   lists,
   name,
   ...customMeta
-} = KEYSTONE_ADMIN_META;
+} = OCOP_ADMIN_META;
 headless?.map((key) => {
   delete lists[key];
 });
@@ -49,6 +48,7 @@ const resolveCustomPages = (pages) => {
 };
 
 export const AdminMetaProvider = ({ children }) => {
+  console.log(views);
   // TODO: Permission query to see which lists to provide
   const listsByKey = {};
   const listsByPath = {};
@@ -91,7 +91,7 @@ export const AdminMetaProvider = ({ children }) => {
       // console.log(key, fields);
 
       fields = fields.filter((field) => {
-        const ignore = headless.find((ignore) => ignore === field?.ref);
+        const ignore = headless?.find((ignore) => ignore === field?.ref);
         return !ignore;
       });
 

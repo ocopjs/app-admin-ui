@@ -19,7 +19,12 @@ import {
 import { Truncate } from "@arch-ui/typography";
 import Tooltip from "@arch-ui/tooltip";
 import { FlexGroup } from "@arch-ui/layout";
-import { PersonIcon, SignOutIcon, TerminalIcon } from "@primer/octicons-react";
+import {
+  MarkGithubIcon,
+  PersonIcon,
+  SignOutIcon,
+  TerminalIcon,
+} from "@primer/octicons-react";
 
 import { useAdminMeta } from "../providers/AdminMeta";
 import { KEYBOARD_SHORTCUT, useResizeHandler } from "../hooks/ResizeHandler";

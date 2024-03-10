@@ -119,7 +119,7 @@ class AdminUIApp {
   }
 
   getAdminUIMeta(ocop) {
-    // This is exposed as the global `KEYSTONE_ADMIN_META` in the client.
+    // This is exposed as the global `OCOP_ADMIN_META` in the client.
     const {
       headless,
       appId,
@@ -248,6 +248,7 @@ class AdminUIApp {
     const middlewarePairs = dev
       ? this.createDevMiddleware({ adminMeta: this.getAdminUIMeta(ocop), ocop })
       : this.createProdMiddleware({ distDir });
+
     for (const pair of middlewarePairs) {
       // const middleware = (req, res, next) =>
       //   !this.authStrategy || this.isAccessAllowed(req)

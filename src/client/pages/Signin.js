@@ -171,7 +171,7 @@ const SignInPage = () => {
         )}
       </Alerts>
       <Form method="post" onSubmit={onSubmit}>
-        {/* {getCustomLogo ? getCustomLogo() : <OcopLogo />} */}
+        {/* {getCustomLogo ? getCustomLogo() : <Logo />} */}
         {/* <Divider /> */}
         <div>
           <PageTitle css={{ marginTop: 0, marginBottom: `${gridSize}px` }}>
