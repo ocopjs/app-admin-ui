@@ -64,6 +64,12 @@ module.exports = function ({ adminMeta, adminViews, entry, outputPath }) {
     ],
   });
 
+  rules.push({
+    test: /\.mjs$/,
+    include: /node_modules/,
+    type: "javascript/auto",
+  });
+
   const entryPath = `./${entry}.js`;
   return {
     mode,
