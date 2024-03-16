@@ -99,10 +99,10 @@ dependencies:
     specifier: ^10.1.1
     version: 10.3.1(react@17.0.2)
   '@ocopjs/field-views-loader':
-    specifier: 1.0.0
+    specifier: ^1.0.0
     version: 1.0.0
   '@ocopjs/utils':
-    specifier: 1.0.5
+    specifier: ^1.0.5
     version: 1.0.5
   '@primer/octicons-react':
     specifier: ^11.3.0

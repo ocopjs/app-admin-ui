@@ -68,7 +68,7 @@ export default function SortPopout() {
         </Button>
       )}
     >
-      <div css={{ padding: POPOUT_GUTTER }}>
+      <div style={{ padding: POPOUT_GUTTER }}>
         <Options
           components={{ Option: SortOption }}
           isOptionSelected={isOptionSelected}
@@ -95,7 +95,7 @@ export const SortOption = ({ children, isFocused, isSelected, ...props }) => {
     <OptionPrimitive isFocused={isFocused} isSelected={isSelected} {...props}>
       <span>
         {children}
-        <small css={{ color: colors.N40 }}> {direction}</small>
+        <small style={{ color: colors.N40 }}> {direction}</small>
       </span>
       <CheckMark isFocused={isFocused} isSelected={isSelected} />
     </OptionPrimitive>
@@ -104,7 +104,7 @@ export const SortOption = ({ children, isFocused, isSelected, ...props }) => {
 
 const Note = (props) => (
   <div
-    css={{
+    style={{
       color: colors.N60,
       fontSize: "0.85em",
     }}

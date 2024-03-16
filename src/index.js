@@ -11,23 +11,19 @@ const getWebpackConfig = require("./server/getWebpackConfig");
 
 class AdminUIApp {
   constructor({
-    headless,
-    appId,
-    pageId,
-    name = "Ocop",
+    name = "Hệ thống",
     adminPath = "/admin",
     apiPath = "/admin/api",
     graphiqlPath = "/admin/graphiql",
     authStrategy,
     pages,
     enableDefaultRoute = false,
-    // isAccessAllowed = () => true,
+    isAccessAllowed = () => true,
     hooks = path.resolve("./admin-ui/"),
     schemaName = "public",
     adminMeta = {},
     defaultPageSize = 50,
     maximumPageSize = 1000,
-    authService,
   } = {}) {
     if (adminPath === "/") {
       throw new Error("Admin path cannot be the root path. Try; '/admin'");
@@ -35,7 +31,7 @@ class AdminUIApp {
 
     if (authStrategy && authStrategy.authType !== "password") {
       throw new Error(
-        "Ocop 5 Admin currently only supports the `PasswordAuthStrategy`",
+        "Ocop Admin currently only supports the `PasswordAuthStrategy`",
       );
     }
 
@@ -44,13 +40,10 @@ class AdminUIApp {
         "The schemaName 'internal' is a reserved name cannot be used in the AdminUIApp.",
       );
     }
-    this.headless = headless;
-    this.appId = appId;
-    this.pageId = pageId;
-    this.authService = authService;
+
     this.name = name;
     this.adminPath = adminPath;
-    // this.authStrategy = authStrategy;
+    this.authStrategy = authStrategy;
     this.pages = pages;
     this.apiPath = apiPath;
     this.graphiqlPath = graphiqlPath;
@@ -58,7 +51,7 @@ class AdminUIApp {
     this.hooks = hooks;
     this.defaultPageSize = defaultPageSize;
     this.maximumPageSize = Math.max(defaultPageSize, maximumPageSize);
-    // this._isAccessAllowed = isAccessAllowed;
+    this._isAccessAllowed = isAccessAllowed;
     this._schemaName = schemaName;
     this._adminMeta = adminMeta;
     this.routes = {
@@ -67,13 +60,15 @@ class AdminUIApp {
     };
   }
 
-  // isAccessAllowed(req) {
-  //   return (
-  //     !this.authStrategy ||
-  //     (req.user &&
-  //       this._isAccessAllowed({ authentication: { item: req.user, listKey: req.authedListKey } }))
-  //   );
-  // }
+  isAccessAllowed(req) {
+    return (
+      !this.authStrategy ||
+      (req.user &&
+        this._isAccessAllowed({
+          authentication: { item: req.user, listKey: req.authedListKey },
+        }))
+    );
+  }
 
   build({ ocop, distDir }) {
     const builtAdminRoot = path.join(distDir, "admin");
@@ -89,18 +84,18 @@ class AdminUIApp {
     );
     compilers.push(secureCompiler);
 
-    // if (this.authStrategy) {
-    //   const publicCompiler = webpack(
-    //     getWebpackConfig({
-    //       // override lists so that schema and field views are excluded
-    //       adminMeta: { ...adminMeta, lists: {} },
-    //       adminViews: this.getAdminViews({ ocop, includeLists: false }),
-    //       entry: 'public',
-    //       outputPath: path.join(builtAdminRoot, 'public'),
-    //     })
-    //   );
-    //   compilers.push(publicCompiler);
-    // }
+    if (this.authStrategy) {
+      const publicCompiler = webpack(
+        getWebpackConfig({
+          // override lists so that schema and field views are excluded
+          adminMeta: { ...adminMeta, lists: {} },
+          adminViews: this.getAdminViews({ ocop, includeLists: false }),
+          entry: "public",
+          outputPath: path.join(builtAdminRoot, "public"),
+        }),
+      );
+      compilers.push(publicCompiler);
+    }
 
     return Promise.all(
       compilers.map(
@@ -120,21 +115,12 @@ class AdminUIApp {
 
   getAdminUIMeta(ocop) {
     // This is exposed as the global `OCOP_ADMIN_META` in the client.
-    const {
-      headless,
-      appId,
-      pageId,
-      authService,
-      name,
-      adminPath,
-      apiPath,
-      graphiqlPath,
-      pages,
-      hooks,
-    } = this;
+    const { name, adminPath, apiPath, graphiqlPath, pages, hooks } = this;
     const { signinPath, signoutPath } = this.routes;
     const { lists } = ocop.getAdminMeta({ schemaName: this._schemaName });
-    // const authStrategy = this.authStrategy ? this.authStrategy.getAdminMeta() : undefined;
+    const authStrategy = this.authStrategy
+      ? this.authStrategy.getAdminMeta()
+      : undefined;
 
     // Normalize list adminConfig data, falling back to admin-level size defaults if necessary.
     Object.values(lists || {}).forEach(
@@ -159,10 +145,6 @@ class AdminUIApp {
     );
 
     return {
-      headless,
-      appId,
-      pageId,
-      authService,
       adminPath,
       apiPath,
       graphiqlPath,
@@ -170,7 +152,7 @@ class AdminUIApp {
       hooks,
       signinPath,
       signoutPath,
-      // authStrategy,
+      authStrategy,
       lists,
       name,
       ...this._adminMeta,
@@ -206,18 +188,22 @@ class AdminUIApp {
         "*/*": () => {
           // We need to reset the res 'Content-Type' otherwise it gets replaced by the format we've matched on: '*/*'.
           // Returning a wildcard mimetype causes problems if a 'X-Content-Type-Options: nosniff' header is also set.
-          // See.. https://github.com/ocop-vn/ocop/issues/2741
+          // See.. https://github.com/ocopjs/ocop-5/issues/2741
           const extension = path.extname(req.url);
+          // if (extension) res.type(extension);
           if ([".json", ".js"].includes(extension)) res.type(extension);
           next();
         },
         // For page loads, we want to redirect back to signin page
-        // 'text/html': () => {
-        //   if (req.originalUrl !== this.routes.signinPath && !this.isAccessAllowed(req)) {
-        //     return res.redirect(this.routes.signinPath);
-        //   }
-        //   next();
-        // },
+        "text/html": () => {
+          if (
+            req.originalUrl !== this.routes.signinPath &&
+            !this.isAccessAllowed(req)
+          ) {
+            return res.redirect(this.routes.signinPath);
+          }
+          next();
+        },
       });
     });
 
@@ -237,24 +223,26 @@ class AdminUIApp {
       app.use(compression());
     }
 
-    // if (this.authStrategy) {
-    // Short-circuit GET requests when the user already signed in (avoids
-    // downloading UI bundle, doing a client side redirect, etc)
-    // app.get(this.routes.signinPath, (req, res, next) =>
-    //   this.isAccessAllowed(req) ? res.redirect(this.adminPath) : next()
-    // );
-    // }
+    if (this.authStrategy) {
+      // Short-circuit GET requests when the user already signed in (avoids
+      // downloading UI bundle, doing a client side redirect, etc)
+      app.get(this.routes.signinPath, (req, res, next) =>
+        this.isAccessAllowed(req) ? res.redirect(this.adminPath) : next(),
+      );
+    }
 
     const middlewarePairs = dev
-      ? this.createDevMiddleware({ adminMeta: this.getAdminUIMeta(ocop), ocop })
+      ? this.createDevMiddleware({
+          adminMeta: this.getAdminUIMeta(ocop),
+          ocop,
+        })
       : this.createProdMiddleware({ distDir });
-
     for (const pair of middlewarePairs) {
-      // const middleware = (req, res, next) =>
-      //   !this.authStrategy || this.isAccessAllowed(req)
-      //     ? pair.secure(req, res, next)
-      //     : pair.public(req, res, next);
-      app.use(dev ? "/" : adminPath, pair.secure);
+      const middleware = (req, res, next) =>
+        !this.authStrategy || this.isAccessAllowed(req)
+          ? pair.secure(req, res, next)
+          : pair.public(req, res, next);
+      app.use(dev ? "/" : adminPath, middleware);
     }
 
     if (this.enableDefaultRoute) {
@@ -288,11 +276,11 @@ class AdminUIApp {
       { secure: express.static(secureBuiltRoot) },
       { secure: fallback("index.html", { root: secureBuiltRoot }) },
     ];
-    // if (this.authStrategy) {
-    //   const publicBuiltRoot = path.join(builtAdminRoot, 'public');
-    //   middlewares[0].public = express.static(publicBuiltRoot);
-    //   middlewares[1].public = fallback('index.html', { root: publicBuiltRoot });
-    // }
+    if (this.authStrategy) {
+      const publicBuiltRoot = path.join(builtAdminRoot, "public");
+      middlewares[0].public = express.static(publicBuiltRoot);
+      middlewares[1].public = fallback("index.html", { root: publicBuiltRoot });
+    }
     return middlewares;
   }
 
@@ -320,18 +308,24 @@ class AdminUIApp {
         ),
       },
     ];
-    // if (this.authStrategy) {
-    // override lists so that schema and field views are excluded
-    //   const publicCompiler = webpack(
-    //     getWebpackConfig({
-    //       adminMeta: { ...adminMeta, lists: {} },
-    //       adminViews: this.getAdminViews({ ocop, includeLists: false }),
-    //       entry: 'public',
-    //     })
-    //   );
-    //   middlewares[0].public = webpackDevMiddleware(publicCompiler, webpackMiddlewareConfig);
-    //   middlewares[1].public = webpackHotMiddleware(publicCompiler, webpackHotMiddlewareConfig);
-    // }
+    if (this.authStrategy) {
+      // override lists so that schema and field views are excluded
+      const publicCompiler = webpack(
+        getWebpackConfig({
+          adminMeta: { ...adminMeta, lists: {} },
+          adminViews: this.getAdminViews({ ocop, includeLists: false }),
+          entry: "public",
+        }),
+      );
+      middlewares[0].public = webpackDevMiddleware(
+        publicCompiler,
+        webpackMiddlewareConfig,
+      );
+      middlewares[1].public = webpackHotMiddleware(
+        publicCompiler,
+        webpackHotMiddlewareConfig,
+      );
+    }
     return middlewares;
   }
 }

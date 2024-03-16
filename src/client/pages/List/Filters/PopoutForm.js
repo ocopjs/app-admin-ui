@@ -10,7 +10,7 @@ import AnimateHeight from "../../../components/AnimateHeight";
 const FooterButton = ({ isPrimary, ...props }) => (
   <button
     type="button"
-    css={{
+    style={{
       background: 0,
       border: 0,
       cursor: "pointer",

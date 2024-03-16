@@ -29,7 +29,7 @@ const Render = ({ children }) => children();
 // Styled Components
 const Table = (props) => (
   <table
-    css={{
+    style={{
       borderCollapse: "collapse",
       borderSpacing: 0,
       tableLayout: "fixed",
@@ -41,7 +41,7 @@ const Table = (props) => (
 
 const TableRow = ({ isSelected, ...props }) => (
   <tr
-    css={{
+    style={{
       "> td": {
         backgroundColor: isSelected ? colors.B.L95 : null,
         boxShadow: isSelected
@@ -55,7 +55,7 @@ const TableRow = ({ isSelected, ...props }) => (
 
 const HeaderCell = ({ isSelected, isSortable, ...props }) => (
   <th
-    css={{
+    style={{
       backgroundColor: "white",
       boxShadow: `0 2px 0 ${alpha(colors.text, 0.1)}`,
       boxSizing: "border-box",
@@ -82,7 +82,7 @@ const HeaderCell = ({ isSelected, isSortable, ...props }) => (
 
 const BodyCell = (props) => (
   <td
-    css={{
+    style={{
       boxSizing: "border-box",
       padding: `${gridSize + 2}px ${gridSize}px`,
       position: "relative",
@@ -94,18 +94,8 @@ const BodyCell = (props) => (
 const ItemLink = ({ path, item, ...props }) => (
   <Link
     to={`${path}/${item.id}`}
-    css={{
+    style={{
       color: colors.text,
-
-      /* Increase hittable area on item link */
-      "&:only-of-type::before": {
-        content: '" "',
-        position: "absolute",
-        bottom: 0,
-        left: 0,
-        right: 0,
-        top: 0,
-      },
     }}
     {...props}
   />
@@ -113,7 +103,7 @@ const ItemLink = ({ path, item, ...props }) => (
 
 const BodyCellTruncated = (props) => (
   <BodyCell
-    css={{
+    style={{
       maxWidth: "10rem",
       overflow: "hidden",
       textOverflow: "ellipsis",
@@ -126,7 +116,7 @@ const BodyCellTruncated = (props) => (
 
 const SortDirectionArrow = ({ size = "0.25em", rotate = "0deg", ...props }) => (
   <span
-    css={{
+    style={{
       borderLeft: `${size} solid transparent`,
       borderRight: `${size} solid transparent`,
       borderTop: `${size} solid`,
@@ -264,7 +254,7 @@ const ListRow = ({
             <BodyCell key={path}>
               <ShieldIcon
                 title={itemErrors[path].message}
-                css={{ color: colors.N20 }}
+                style={{ color: colors.N20 }}
               />
               <A11yText>{itemErrors[path].message}</A11yText>
             </BodyCell>
@@ -305,7 +295,7 @@ const ListRow = ({
         return (
           <BodyCellTruncated
             key={path}
-            css={{
+            style={{
               fontFamily: field.isPrimaryKey
                 ? "Monaco, Consolas, monospace"
                 : null,
@@ -315,16 +305,15 @@ const ListRow = ({
           </BodyCellTruncated>
         );
       })}
-      <BodyCell css={{ padding: 0 }}>
+      <BodyCell style={{ padding: 0 }}>
         <Dropdown
           align="right"
           target={(handlers) => (
             <Button
               variant="subtle"
-              css={{
+              style={{
                 opacity: 0,
                 transition: "opacity 150ms",
-                "tr:hover > td > &": { opacity: 1 },
               }}
               {...handlers}
             >
@@ -374,16 +363,16 @@ export default function ListTable({
   const TableContents = ({ isLoading, children }) => (
     <Fragment>
       <colgroup>
-        <col css={{ width: "40px" }} />
+        <col style={{ width: "40px" }} />
         {fields.map((f) => (
           <col key={f.path} />
         ))}
-        <col css={{ width: "40px" }} />
+        <col style={{ width: "40px" }} />
       </colgroup>
       <thead>
         <tr>
           <HeaderCell>
-            <div css={{ position: "relative", top: 3 }}>
+            <div style={{ position: "relative", top: 3 }}>
               <CheckboxPrimitive
                 checked={
                   items && items.length && items.length === selectedItems.length
@@ -408,7 +397,7 @@ export default function ListTable({
               />
             );
           })}
-          <HeaderCell css={{ padding: 0 }}>{columnControl}</HeaderCell>
+          <HeaderCell style={{ padding: 0 }}>{columnControl}</HeaderCell>
         </tr>
       </thead>
       <tbody data-test-table-loaded={!isLoading}>{children}</tbody>
@@ -416,7 +405,7 @@ export default function ListTable({
   );
 
   return (
-    <Card css={{ marginBottom: "3em" }}>
+    <Card style={{ marginBottom: "3em" }}>
       <Table id={cypressId}>
         <Suspense
           fallback={

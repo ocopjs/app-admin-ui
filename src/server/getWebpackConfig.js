@@ -8,12 +8,11 @@ const clientDirectory = path.resolve(__dirname, "..", "client");
 
 module.exports = function ({ adminMeta, adminViews, entry, outputPath }) {
   const templatePlugin = new HtmlWebpackPlugin({
-    title: "Admin UI",
+    title: "OcopJS",
     template: "index.html",
     chunksSortMode: "none",
     scriptLoading: "defer",
   });
-
   const environmentPlugin = new webpack.DefinePlugin({
     ENABLE_DEV_FEATURES: enableDevFeatures,
     IS_PUBLIC_BUNDLE: entry === "public",
@@ -26,7 +25,6 @@ module.exports = function ({ adminMeta, adminViews, entry, outputPath }) {
       exclude: (pathname) => {
         return (
           pathname.includes("node_modules") &&
-          pathname &&
           !pathname.startsWith(clientDirectory)
         );
       },
@@ -66,12 +64,6 @@ module.exports = function ({ adminMeta, adminViews, entry, outputPath }) {
     ],
   });
 
-  rules.push({
-    test: /\.mjs$/,
-    include: /node_modules/,
-    type: "javascript/auto",
-  });
-
   const entryPath = `./${entry}.js`;
   return {
     mode,
@@ -105,7 +97,7 @@ module.exports = function ({ adminMeta, adminViews, entry, outputPath }) {
         // we only want to bundle a single version of react
         // but we don't want to assume a consumer has the same version of react
         // that we use so we alias react the react resolved from the admin ui
-        // which depends on the version of react that ocop uses
+        // which depends on the version of react that ocops uses
         react$: require.resolve("react"),
         "react-dom$": require.resolve("react-dom"),
         // we also only want a single version of react-router-dom so that all usages of it are using the same context object

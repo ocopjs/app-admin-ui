@@ -9,7 +9,7 @@ import { useList } from "../../providers/List";
 
 const Toolbar = (props) => (
   <div
-    css={{
+    style={{
       backgroundColor: alpha("#fff", 0.93),
       bottom: 0,
       boxShadow: `${alpha(colors.text, 0.1)} 0px -2px 0px`,
@@ -49,8 +49,10 @@ function Reset({ canReset, onReset }) {
   }
 
   return resetRequested ? (
-    <div css={{ display: "flex", alignItems: "center", marginLeft: gridSize }}>
-      <div css={{ fontSize: "0.9rem", marginRight: gridSize }}>
+    <div
+      style={{ display: "flex", alignItems: "center", marginLeft: gridSize }}
+    >
+      <div style={{ fontSize: "0.9rem", marginRight: gridSize }}>
         Bạn chắc chứ?
       </div>
       <Button
@@ -100,7 +102,7 @@ export default memo(
     return (
       <Fragment>
         <Toolbar key="footer">
-          <div css={{ display: "flex", alignItems: "center" }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <LoadingButton
               className={`btn btn-${
                 hasWarnings && !hasErrors ? "warning" : "primary"

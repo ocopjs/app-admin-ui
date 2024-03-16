@@ -24,7 +24,7 @@ const _BUTTON_WIDTH = 280;
 
 const Container = (props) => (
   <div
-    css={{
+    style={{
       alignItems: "center",
       display: "flex",
       flexDirection: "column",
@@ -36,11 +36,11 @@ const Container = (props) => (
   />
 );
 
-const Alerts = (props) => <div css={{ height: "48px" }} {...props} />;
+const Alerts = (props) => <div style={{ height: "48px" }} {...props} />;
 
 const Form = (props) => (
   <form
-    css={{
+    style={{
       marginBottom: "120px",
       minWidth: "650px",
       padding: "40px",
@@ -55,7 +55,7 @@ const Form = (props) => (
 
 const Divider = (props) => (
   <div
-    css={{
+    style={{
       borderRight: `2px solid ${colors.N10}`,
       minHeight: "450px",
       lineHeight: "450px",
@@ -68,7 +68,7 @@ const Divider = (props) => (
 
 const FieldLabel = (props) => (
   <div
-    css={{
+    style={{
       color: `${colors.N60}`,
       marginTop: `${_PADDING}px`,
       marginBottom: `${gridSize}px`,
@@ -80,7 +80,7 @@ const FieldLabel = (props) => (
 
 const Fields = (props) => (
   <div
-    css={{ margin: `${_PADDING}px 0`, width: `${_BUTTON_WIDTH}px` }}
+    style={{ margin: `${_PADDING}px 0`, width: `${_BUTTON_WIDTH}px` }}
     {...props}
   />
 );
@@ -174,10 +174,10 @@ const SignupPage = () => {
         {getCustomLogo ? getCustomLogo() : <Logo />}
         <Divider />
         <div>
-          <PageTitle css={{ marginTop: 0, marginBottom: `${gridSize}px` }}>
+          <PageTitle style={{ marginTop: 0, marginBottom: `${gridSize}px` }}>
             {siteName}
           </PageTitle>
-          <Title css={{ marginBottom: `${_PADDING * 2}px` }}>
+          <Title style={{ marginBottom: `${_PADDING * 2}px` }}>
             Đăng ký tài khoản
           </Title>
           <Fields>
@@ -211,7 +211,7 @@ const SignupPage = () => {
             type="submit"
             isLoading={loading || reloading}
             indicatorVariant="dots"
-            css={{
+            style={{
               width: `${_BUTTON_WIDTH}px`,
               height: "2.6em",
               margin: `${_PADDING}px 0`,

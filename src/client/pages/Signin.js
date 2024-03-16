@@ -1,6 +1,6 @@
 /** @jsx jsx */
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { jsx } from "@emotion/core";
 
 import { Alert } from "@arch-ui/alert";
@@ -9,19 +9,21 @@ import { Input } from "@arch-ui/input";
 import { colors, gridSize } from "@arch-ui/theme";
 import { PageTitle, Title } from "@arch-ui/typography";
 
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 
 import { upcase } from "@ocopjs/utils";
 
+import Logo from "../components/Logo";
+
 import { useAdminMeta } from "../providers/AdminMeta";
 import { useUIHooks } from "../providers/Hooks";
-import { initApolloClient } from "../apolloClient";
+
 const _PADDING = gridSize * 2;
 const _BUTTON_WIDTH = 280;
 
 const Container = (props) => (
   <div
-    css={{
+    style={{
       alignItems: "center",
       display: "flex",
       flexDirection: "column",
@@ -33,11 +35,11 @@ const Container = (props) => (
   />
 );
 
-const Alerts = (props) => <div css={{ height: "48px" }} {...props} />;
+const Alerts = (props) => <div style={{ height: "48px" }} {...props} />;
 
 const Form = (props) => (
   <form
-    css={{
+    style={{
       marginBottom: "120px",
       minWidth: "650px",
       padding: "40px",
@@ -52,7 +54,7 @@ const Form = (props) => (
 
 const Divider = (props) => (
   <div
-    css={{
+    style={{
       borderRight: `2px solid ${colors.N10}`,
       minHeight: "450px",
       lineHeight: "450px",
@@ -65,7 +67,7 @@ const Divider = (props) => (
 
 const FieldLabel = (props) => (
   <div
-    css={{
+    style={{
       color: `${colors.N60}`,
       marginTop: `${_PADDING}px`,
       marginBottom: `${gridSize}px`,
@@ -77,81 +79,51 @@ const FieldLabel = (props) => (
 
 const Fields = (props) => (
   <div
-    css={{ margin: `${_PADDING}px 0`, width: `${_BUTTON_WIDTH}px` }}
+    style={{ margin: `${_PADDING}px 0`, width: `${_BUTTON_WIDTH}px` }}
     {...props}
   />
 );
 
-export const AUTH_MUTATION = ({
-  authenticateMutationName,
-  identityField,
-  secretField,
-}) =>
-  gql`
-mutation signin($identity: String, $secret: String) {
-  authenticate: ${authenticateMutationName}(${identityField}: $identity, ${secretField}: $secret) {
-    item {
-      id
-    }
-    token
-  }
-}
-`;
 const SignInPage = () => {
-  const authenticateMutationName = "";
-  const identityField = "";
-  const secretField = "";
   const {
     name: siteName,
-    authService: {
-      //   gqlNames: { authenticateMutationName, authenticatedQueryName },
-      //   identityField,
-      //   secretField,
-      //   uri: authUri,
+    authStrategy: {
+      gqlNames: { authenticateMutationName },
+      identityField,
+      secretField,
     },
   } = useAdminMeta();
 
-  const AUTHED_USER_QUERY = gql`
-    query {
-      user: edumsUser
-    }
-  `;
-
-  // const authClient = useMemo(() => initApolloClient({ uri: authUri }), []);
   const { logo: getCustomLogo } = useUIHooks();
 
   const [identity, setIdentity] = useState("");
   const [secret, setSecret] = useState("");
+  const [reloading, setReloading] = useState(false);
 
-  const { refetch } = useQuery(AUTHED_USER_QUERY, {
-    // client: authClient,
-    onCompleted: (data) => {
-      const { user } = data;
-      if (user) window.location.href = "/admin";
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-
-  const [signIn, { error, loading }] = useMutation(
-    AUTH_MUTATION({ authenticateMutationName, identityField, secretField }),
-    {
-      variables: { identity, secret },
-      client: authClient,
-      onCompleted: async ({ authenticate = {} }) => {
-        const { token } = authenticate;
-        if (token) {
-          localStorage.setItem("token", token);
-          await authClient.clearStore();
-          await refetch();
+  const AUTH_MUTATION = gql`
+    mutation signin($identity: String, $secret: String) {
+      authenticate: ${authenticateMutationName}(${identityField}: $identity, ${secretField}: $secret) {
+        item {
+          id
         }
-      },
-      onError: () => {
-        localStorage.removeItem("token");
-      }, // Remove once a bad password no longer throws an error
+      }
+    }
+  `;
+
+  const [signIn, { error, loading, client }] = useMutation(AUTH_MUTATION, {
+    variables: { identity, secret },
+    onCompleted: async () => {
+      // Flag so the "Submit" button doesn't temporarily flash as available while reloading the page.
+      setReloading(true);
+
+      // Ensure there's no old unauthenticated data hanging around
+      await client.clearStore();
+
+      // Let the server-side redirects kick in to send the user to the right place
+      window.location.reload(true);
     },
-  );
+    onError: () => {}, // Remove once a bad password no longer throws an error
+  });
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -166,19 +138,19 @@ const SignInPage = () => {
       <Alerts>
         {error && (
           <Alert appearance="danger">
-            Tên đăng nhập hoặc mật khẩu không đúng
+            Your username or password were incorrect
           </Alert>
         )}
       </Alerts>
       <Form method="post" onSubmit={onSubmit}>
-        {/* {getCustomLogo ? getCustomLogo() : <Logo />} */}
-        {/* <Divider /> */}
+        {getCustomLogo ? getCustomLogo() : <Logo />}
+        <Divider />
         <div>
-          <PageTitle css={{ marginTop: 0, marginBottom: `${gridSize}px` }}>
+          <PageTitle style={{ marginTop: 0, marginBottom: `${gridSize}px` }}>
             {siteName}
           </PageTitle>
-          <Title css={{ marginBottom: `${_PADDING * 2}px` }}>
-            Trang quản trị website
+          <Title style={{ marginBottom: `${_PADDING * 2}px` }}>
+            Quản Lý Nội Dung
           </Title>
           <Fields>
             <FieldLabel>{upcase(identityField)}</FieldLabel>
@@ -199,11 +171,11 @@ const SignInPage = () => {
             />
           </Fields>
           <LoadingButton
-            className="btn btn-primary"
+            appearance="primary"
             type="submit"
-            isLoading={loading}
+            isLoading={loading || reloading}
             indicatorVariant="dots"
-            css={{
+            style={{
               width: `${_BUTTON_WIDTH}px`,
               height: "2.6em",
               margin: `${_PADDING}px 0`,

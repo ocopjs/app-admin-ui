@@ -171,7 +171,7 @@ const UpdateManyModal = ({ list, items, isOpen, onUpdate, onClose }) => {
       {selectedFields.map((field, i) => {
         return (
           <Suspense
-            fallback={<LoadingIndicator css={{ height: "3em" }} size={12} />}
+            fallback={<LoadingIndicator style={{ height: "3em" }} size={12} />}
             key={field.path}
           >
             <Render>

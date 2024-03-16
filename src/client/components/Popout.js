@@ -12,7 +12,7 @@ export const POPOUT_GUTTER = gridSize * 2;
 // Layout
 const Bar = (props) => (
   <div
-    css={{
+    style={{
       paddingBottom: `${gridSize * 1.5}px`,
       paddingTop: `${gridSize * 1.5}px`,
       marginLeft: `${POPOUT_GUTTER}px`,
@@ -26,7 +26,7 @@ const Bar = (props) => (
 
 const Header = (props) => (
   <Bar
-    css={{
+    style={{
       alignItems: "center",
       boxShadow: `0 2px 0 ${alpha(colors.text, 0.1)}`,
       display: "flex",
@@ -39,7 +39,7 @@ const Header = (props) => (
 
 const HeaderTitle = (props) => (
   <div
-    css={{
+    style={{
       fontWeight: "bold",
       fontSize: "0.85em",
     }}
@@ -49,7 +49,7 @@ const HeaderTitle = (props) => (
 
 const HeaderLeft = (props) => (
   <div
-    css={{
+    style={{
       position: "absolute",
       left: 0,
     }}
@@ -59,7 +59,7 @@ const HeaderLeft = (props) => (
 
 const HeaderRight = (props) => (
   <div
-    css={{
+    style={{
       position: "absolute",
       left: 0,
     }}
@@ -70,7 +70,7 @@ const HeaderRight = (props) => (
 const Body = forwardRef((props, ref) => (
   <div
     ref={ref}
-    css={{
+    style={{
       maxHeight: "300px",
       overflowY: "auto",
       overflowX: "hidden",
@@ -82,7 +82,7 @@ const Body = forwardRef((props, ref) => (
 
 const Footer = (props) => (
   <Bar
-    css={{
+    style={{
       alignItems: "center",
       boxShadow: `0 -2px 0 ${alpha(colors.text, 0.1)}`,
       display: "flex",
@@ -95,7 +95,7 @@ const Footer = (props) => (
 // Other
 export const DisclosureArrow = ({ size = "0.3em", ...props }) => (
   <span
-    css={{
+    style={{
       borderLeft: `${size} solid transparent`,
       borderRight: `${size} solid transparent`,
       borderTop: `${size} solid`,

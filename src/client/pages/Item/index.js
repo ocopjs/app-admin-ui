@@ -50,7 +50,7 @@ import { useUIHooks } from "../../providers/Hooks";
 const Render = ({ children }) => children();
 
 const Form = (props) => (
-  <form css={{ marginBottom: `${gridSize * 3}px` }} {...props} />
+  <form style={{ marginBottom: `${gridSize * 3}px` }} {...props} />
 );
 
 // TODO: show updateInProgress and updateSuccessful / updateFailed UI
@@ -266,7 +266,7 @@ const ItemDetails = ({ list, item: initialData, itemErrors, onUpdate }) => {
         <PreventNavigation />
       )}
       <ItemTitle id={item.id} list={list} titleText={initialData._label_} />
-      <Card css={{ marginBottom: "3em", paddingBottom: 0 }}>
+      <Card style={{ marginBottom: "3em", paddingBottom: 0 }}>
         <Form>
           <div className="container-lg clearfix">
             <AutocompleteCaptor />

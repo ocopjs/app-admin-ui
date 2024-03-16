@@ -17,7 +17,7 @@ const AddNewItem = () => {
       {(ref) => (
         <IconButton
           ref={ref}
-          css={{ marginRight: -12 }}
+          style={{ marginRight: -12 }}
           variant="subtle"
           icon={PlusIcon}
           id={cypressId}

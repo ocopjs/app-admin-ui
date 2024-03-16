@@ -15,7 +15,9 @@ export class ErrorBoundary extends Component {
 
   render() {
     if (this.state.hasError) {
-      return <span css={{ color: colors.danger }}>Unable to render view</span>;
+      return (
+        <span style={{ color: colors.danger }}>Unable to render view</span>
+      );
     }
 
     return this.props.children;

@@ -11,7 +11,7 @@ import UpdateItems from "../../components/UpdateItems";
 
 export const ManageToolbar = ({ isVisible, ...props }) => (
   <div
-    css={{
+    style={{
       height: "35px",
       marginBottom: `${gridSize * 2}px`,
       marginTop: `${gridSize}px`,
@@ -22,7 +22,7 @@ export const ManageToolbar = ({ isVisible, ...props }) => (
 );
 
 const SelectedCount = (props) => (
-  <div css={{ color: colors.N40, marginRight: `${gridSize}px` }} {...props} />
+  <div style={{ color: colors.N40, marginRight: `${gridSize}px` }} {...props} />
 );
 
 const ListManage = ({ pageSize, totalItems, selectedItems }) => {

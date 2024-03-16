@@ -14,7 +14,7 @@ import Tooltip from "@arch-ui/tooltip";
 let CopyIcon = memo(function CopyIcon({ isCopied }) {
   return isCopied ? (
     <Animation name="pulse" duration="500ms">
-      <CheckIcon css={{ color: colors.create }} />
+      <CheckIcon style={{ color: colors.create }} />
     </Animation>
   ) : (
     <ClippyIcon />
@@ -41,7 +41,7 @@ export let IdCopy = memo(function IdCopy({ id }) {
   return (
     <FlexGroup align="center" isContiguous isInline>
       <div
-        css={{
+        style={{
           color: colors.N30,
           fontFamily: "Monaco, Consolas, monospace",
           fontSize: "0.85em",
@@ -58,7 +58,7 @@ export let IdCopy = memo(function IdCopy({ id }) {
             }}
             variant="subtle"
           >
-            <div css={{ width: 16 }}>
+            <div style={{ width: 16 }}>
               <CopyIcon isCopied={isCopied} />
             </div>
             <A11yText>Copy ID</A11yText>

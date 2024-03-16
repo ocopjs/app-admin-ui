@@ -2,20 +2,21 @@
 
 import { jsx } from "@emotion/core";
 
-import { Fragment, useEffect, useMemo } from "react";
+import { Fragment } from "react";
 
-import { gql, useApolloClient, useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 
 import { CheckIcon } from "@primer/octicons-react";
 import { Button } from "@arch-ui/button";
 import { LoadingIndicator } from "@arch-ui/loading";
+import { colors } from "@arch-ui/theme";
+
 import Animation from "../components/Animation";
 import { useAdminMeta } from "../providers/AdminMeta";
-import { initApolloClient } from "../apolloClient";
 
 const FlexBox = (props) => (
   <div
-    css={{
+    style={{
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -26,14 +27,14 @@ const FlexBox = (props) => (
 );
 
 const Container = (props) => (
-  <FlexBox css={{ minHeight: "100vh" }} {...props} />
+  <FlexBox style={{ minHeight: "100vh" }} {...props} />
 );
 
-const Caption = (props) => <p css={{ fontSize: "1.5em" }} {...props} />;
+const Caption = (props) => <p style={{ fontSize: "1.5em" }} {...props} />;
 
 const SignOutPageButton = (props) => (
   <Button
-    css={{
+    style={{
       width: "200px",
       height: "2.6em",
       marginBottom: "0.8em",
@@ -44,10 +45,13 @@ const SignOutPageButton = (props) => (
 );
 
 const SignedOutPage = () => {
-  const { authService = {}, signinPath } = useAdminMeta();
-  console.log(authService);
-  const { gqlNames = {}, uri: authUri } = authService;
-  const { unauthenticateMutationName = "unauthenticateUser" } = gqlNames;
+  const {
+    authStrategy: {
+      gqlNames: { unauthenticateMutationName },
+    },
+    signinPath,
+  } = useAdminMeta();
+
   const UNAUTH_MUTATION = gql`
     mutation {
       unauthenticate: ${unauthenticateMutationName} {
@@ -56,52 +60,34 @@ const SignedOutPage = () => {
     }
   `;
 
-  const authClient = useMemo(() => initApolloClient({ uri: authUri }), []);
-  const client = useApolloClient();
-  // const [signOut, { loading, client, called }] = useMutation(UNAUTH_MUTATION, {
-  //   client: authClient,
-  //   onCompleted: async () => {
-  //     // Ensure there's no old authenticated data hanging around
-  //     localStorage.removeItem("token");
-  //     await client.clearStore();
-  //   },
-  // });
+  const [signOut, { loading, client, called }] = useMutation(UNAUTH_MUTATION, {
+    onCompleted: async () => {
+      // Ensure there's no old authenticated data hanging around
+      localStorage.removeItem("token");
+      await client.clearStore();
+    },
+  });
 
-  async function signOut() {
-    localStorage.removeItem("token");
-    await client.clearStore();
+  if (!called) {
+    signOut();
   }
 
-  useEffect(() => {
-    signOut();
-  }, []);
-
-  // if (!called) {
-  //   signOut();
-  // }
-  const loading = false;
   return (
     <Container>
       {loading ? (
         <Fragment>
-          <LoadingIndicator css={{ height: "3em" }} size={12} />
-          <Caption>Đăng xuất.</Caption>
+          <LoadingIndicator style={{ height: "3em" }} size={12} />
+          <Caption>Signing out.</Caption>
         </Fragment>
       ) : (
         <Fragment>
           <Animation name="pulse" duration="500ms">
-            <CheckIcon
-              size={48}
-              css={{ color: "var(--color-text-success) !important" }}
-            />
+            <CheckIcon size={48} style={{ color: colors.primary }} />
           </Animation>
-          <Caption>Bạn đã đăng xuất.</Caption>
+          <Caption>You have been signed out.</Caption>
           <FlexBox>
-            <SignOutPageButton
-              variant="ghost"
-              href={authService?.redirect || signinPath}
-            >
-              Đăng nhập
+            <SignOutPageButton variant="ghost" href={signinPath}>
+              Sign In
             </SignOutPageButton>
           </FlexBox>
         </Fragment>

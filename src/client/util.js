@@ -75,7 +75,7 @@ export const handleCreateUpdateMutationError = ({ error, addToast }) => {
         toastContent = (
           <div>
             <strong>{error.name}</strong>
-            <ul css={{ paddingLeft: 0, listStylePosition: "inside" }}>
+            <ul style={{ paddingLeft: 0, listStylePosition: "inside" }}>
               {error.data.messages.map((message, i) => (
                 <li key={i}>{message}</li>
               ))}

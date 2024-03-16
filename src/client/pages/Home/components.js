@@ -15,7 +15,7 @@ import { A11yText } from "@arch-ui/typography";
 
 export const HeaderInset = (props) => (
   <div
-    css={{ paddingLeft: gridSize * 2, paddingRight: gridSize * 2 }}
+    style={{ paddingLeft: gridSize * 2, paddingRight: gridSize * 2 }}
     {...props}
   />
 );
@@ -24,16 +24,11 @@ const BOX_GUTTER = `${gridSize * 2}px`;
 
 const BoxElement = (props) => (
   <Card
-    css={{
+    style={{
       color: colors.N40,
       display: "block",
       padding: BOX_GUTTER,
       position: "relative",
-
-      "&:hover, &:focus": {
-        outline: 0,
-        textDecoration: "none",
-      },
     }}
     {...props}
   />
@@ -85,7 +80,7 @@ export const Box = BoxComponent;
 
 export const Name = ({ isHover, ...props }) => (
   <span
-    css={{
+    style={{
       borderBottom: `1px solid ${isHover ? colors.B.A50 : "transparent"}`,
       color: "var(--color-text-link) !important",
       display: "inline-block",
@@ -108,11 +103,11 @@ export const Count = ({ meta }) => {
   const count = (meta && meta.count) || 0;
 
   return isLoading ? (
-    <div css={{ height: "0.85em" }}>
+    <div style={{ height: "0.85em" }}>
       <LoadingIndicator />
     </div>
   ) : (
-    <div css={{ fontSize: "0.85em" }}>{`${count} Item${
+    <div style={{ fontSize: "0.85em" }}>{`${count} Item${
       count !== 1 ? "s" : ""
     }`}</div>
   );
@@ -120,7 +115,7 @@ export const Count = ({ meta }) => {
 
 export const CreateButton = ({ isHover, ...props }) => (
   <button
-    css={{
+    style={{
       alignItems: "center",
       backgroundColor: isHover ? colors.N20 : colors.N10,
       borderRadius: "2px",
@@ -136,10 +131,6 @@ export const CreateButton = ({ isHover, ...props }) => (
       top: BOX_GUTTER,
       transition: "background-color 80ms linear",
       width: "24px",
-
-      "&:hover, &:focus": {
-        backgroundColor: colors.create,
-      },
     }}
     {...props}
   />

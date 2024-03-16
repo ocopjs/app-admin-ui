@@ -27,7 +27,7 @@ const EventCatcher = (props) => (
       e.preventDefault();
       e.stopPropagation();
     }}
-    css={{ marginBottom: gridSize }}
+    style={{ marginBottom: gridSize }}
     {...props}
   />
 );
@@ -40,7 +40,7 @@ export const FieldOption = ({ children, ...props }) => {
     <OptionPrimitive {...props}>
       <span>{children}</span>
       <div
-        css={{
+        style={{
           alignItems: "center",
           display: "flex",
           height: 24,
@@ -48,7 +48,7 @@ export const FieldOption = ({ children, ...props }) => {
           width: 24,
         }}
       >
-        <ChevronRightIcon css={{ color: iconColor }} />
+        <ChevronRightIcon style={{ color: iconColor }} />
       </div>
     </OptionPrimitive>
   );
@@ -69,7 +69,7 @@ const BackButton = ({ show, onClick }) => (
       const style = { ...base, ...states[state] };
       return (
         <div
-          css={{
+          style={{
             cursor: "pointer",
             marginLeft: -gridSize,
             padding: gridSize,
@@ -281,7 +281,7 @@ export default class AddFilterPopout extends Component {
           const style = { ...base, ...states[state] };
           const Code = (p) => (
             <code
-              css={{
+              style={{
                 background: "rgba(0,0,0,0.1)",
                 padding: "1px 5px",
                 borderRadius: 2,
@@ -296,12 +296,12 @@ export default class AddFilterPopout extends Component {
                 <Alert appearance="warning" variant="bold">
                   <AlertIcon
                     size={24}
-                    css={{
+                    style={{
                       marginLeft: -8,
                       marginRight: 12,
                     }}
                   />
-                  <div css={{ fontSize: "0.85em", lineHeight: 1.4 }}>
+                  <div style={{ fontSize: "0.85em", lineHeight: 1.4 }}>
                     Could not find a <Code>Filter</Code> view for field type{" "}
                     <Code>{field.type}</Code>.
                   </div>
@@ -327,7 +327,7 @@ export default class AddFilterPopout extends Component {
               ) : null}
               <Suspense
                 fallback={
-                  <div css={{ display: "flex", justifyContent: "center" }}>
+                  <div style={{ display: "flex", justifyContent: "center" }}>
                     <LoadingSpinner size={32} />
                   </div>
                 }
@@ -368,7 +368,7 @@ export default class AddFilterPopout extends Component {
             variant="subtle"
             appearance="primary"
             spacing="cozy"
-            css={{ marginBottom: gridSize / 2, marginTop: gridSize / 2 }}
+            style={{ marginBottom: gridSize / 2, marginTop: gridSize / 2 }}
             {...handlers}
           >
             Lọc kết quả

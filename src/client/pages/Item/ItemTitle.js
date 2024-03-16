@@ -19,7 +19,9 @@ import ListDescription from "../../components/ListDescription";
 const Container = ({ children }) => {
   const padding = gridSize * 2;
   return (
-    <div css={{ paddingLeft: padding, paddingRight: padding }}>{children}</div>
+    <div style={{ paddingLeft: padding, paddingRight: padding }}>
+      {children}
+    </div>
   );
 };
 
@@ -28,19 +30,19 @@ export const ItemTitle = memo(function ItemTitle({ titleText }) {
   const { itemHeaderActions } = useUIHooks();
   return (
     <Container>
-      <PageTitle css={{ fontSize: 24 }}>{titleText}</PageTitle>
+      <PageTitle style={{ fontSize: 24 }}>{titleText}</PageTitle>
       <ListDescription text={list.adminDoc} />
       <FlexGroup
         align="center"
         justify="space-between"
-        css={{ marginBottom: "0.9rem" }}
+        style={{ marginBottom: "0.9rem" }}
       >
         <div>
           <IconButton
             variant="subtle"
             icon={ChevronLeftIcon}
             to={list.getFullPersistentPath()}
-            css={{ marginLeft: -12 }}
+            style={{ marginLeft: -12 }}
           >
             {list.label}
           </IconButton>

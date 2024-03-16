@@ -62,11 +62,13 @@ export function ListLayout(props) {
           </FlexGroup>
           <ListDescription text={list.adminDoc} />
           <div
-            css={{ alignItems: "center", display: "flex", flexWrap: "wrap" }}
+            style={{ alignItems: "center", display: "flex", flexWrap: "wrap" }}
             id={cypressFiltersId}
           >
             <Suspense
-              fallback={<LoadingIndicator css={{ height: "3em" }} size={12} />}
+              fallback={
+                <LoadingIndicator style={{ height: "3em" }} size={12} />
+              }
             >
               <Render>
                 {() => {
@@ -82,7 +84,7 @@ export function ListLayout(props) {
             <ActiveFilters list={list} />
           </div>
 
-          <ManageToolbar isVisible css={{ marginLeft: 2 }}>
+          <ManageToolbar isVisible style={{ marginLeft: 2 }}>
             {selectedItems.length ? (
               <Management
                 pageSize={pageSize}
@@ -92,7 +94,7 @@ export function ListLayout(props) {
             ) : items && items.length ? (
               <FlexGroup align="center" growIndexes={[0]}>
                 <div
-                  css={{
+                  style={{
                     alignItems: "center",
                     color: colors.N40,
                     display: "flex",
@@ -111,13 +113,13 @@ export function ListLayout(props) {
                   </span>
                   {sortBy ? (
                     <Fragment>
-                      <span css={{ paddingLeft: "0.5ex" }}>sắp xếp bởi</span>
+                      <span style={{ paddingLeft: "0.5ex" }}>sắp xếp bởi</span>
                       <SortPopout />
                     </Fragment>
                   ) : (
                     ""
                   )}
-                  <span css={{ paddingLeft: "0.5ex" }}>với</span>
+                  <span style={{ paddingLeft: "0.5ex" }}>với</span>
                   <ColumnPopout
                     target={(handlers) => (
                       <Button
@@ -133,10 +135,10 @@ export function ListLayout(props) {
                     )}
                   />
                 </div>
-                <FlexGroup align="center" css={{ marginLeft: "1em" }}>
+                <FlexGroup align="center" style={{ marginLeft: "1em" }}>
                   <Suspense
                     fallback={
-                      <LoadingIndicator css={{ height: "3em" }} size={12} />
+                      <LoadingIndicator style={{ height: "3em" }} size={12} />
                     }
                   >
                     <Render>
@@ -170,7 +172,7 @@ export function ListLayout(props) {
                   {(ref) => (
                     <Button
                       variant="subtle"
-                      css={{
+                      style={{
                         background: 0,
                         border: 0,
                         color: colors.N40,

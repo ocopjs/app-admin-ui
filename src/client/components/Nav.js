@@ -32,6 +32,7 @@ import { useScrollQuery } from "../hooks/ScrollQuery";
 
 import { gql, useQuery } from "@apollo/client";
 import { useHistory } from "react-router-dom";
+import { UserInfo } from "./User/Info";
 
 const TRANSITION_DURATION = "220ms";
 const TRANSITION_EASING = "cubic-bezier(0.2, 0, 0, 1)";
@@ -42,7 +43,7 @@ function camelToKebab(string) {
 
 const Col = (props) => (
   <div
-    css={{
+    style={{
       alignItems: "flex-start",
       display: "flex",
       flex: 1,
@@ -56,22 +57,25 @@ const Col = (props) => (
 );
 
 const Inner = (props) => (
-  <Col css={{ height: "100vh", alignItems: "stretch" }} {...props} />
+  <Col style={{ height: "100vh", alignItems: "stretch" }} {...props} />
 );
 
 const Page = (props) => (
-  <div css={{ flex: 1, minHeight: "100vh", position: "relative" }} {...props} />
+  <div
+    style={{ flex: 1, minHeight: "100vh", position: "relative" }}
+    {...props}
+  />
 );
 
-const PageWrapper = (props) => <div css={{ display: "flex" }} {...props} />;
+const PageWrapper = (props) => <div style={{ display: "flex" }} {...props} />;
 
 const Relative = (props) => (
-  <Col css={{ height: "100%", position: "relative" }} {...props} />
+  <Col style={{ height: "100%", position: "relative" }} {...props} />
 );
 
 const GrabHandle = ({ isActive, ...props }) => (
   <div
-    css={{
+    style={{
       backgroundColor: alpha(colors.text, 0.06),
       height: isActive ? "100%" : 0,
       cursor: "col-resize",
@@ -112,7 +116,7 @@ const CollapseExpand = forwardRef(
     return (
       <button
         ref={ref}
-        css={{
+        style={{
           alignItems: "center",
           background: 0,
           border: 0,
@@ -147,7 +151,7 @@ const TooltipContent = ({ kbd, children }) => (
     <span key="children">{children}</span>
     <kbd
       key="kbd"
-      css={{
+      style={{
         backgroundColor: "rgba(255, 255, 255, 0.2)",
         borderRadius: 2,
         display: "inline-block",
@@ -247,7 +251,7 @@ function renderChildren(
         <PersonIcon
           title={label}
           color={colors.N20}
-          css={{ paddingLeft: 8, paddingTop: 4 }}
+          style={{ paddingLeft: 8, paddingTop: 4 }}
         />
       ) : null}
     </PrimaryNavItem>
@@ -317,7 +321,7 @@ function PrimaryNavItems({
 
 const UserInfoContainer = (props) => (
   <div
-    css={{
+    style={{
       paddingBottom: `${PRIMARY_NAV_GUTTER}px`,
       margin: `${PRIMARY_NAV_GUTTER}px`,
       borderBottom: `2px solid ${colors.N10}`,
@@ -330,7 +334,7 @@ const UserInfoContainer = (props) => (
 );
 const UserIcon = (props) => (
   <div
-    css={{
+    style={{
       flexShrink: 0,
       width: "40px",
       height: "40px",
@@ -345,61 +349,61 @@ const UserIcon = (props) => (
   />
 );
 
-const UserInfo = ({ authListPath }) => {
-  const meta = useAdminMeta();
-  const { authService } = meta;
-  const AUTHED_USER_QUERY = gql`
-    query {
-      user: edumsUser
-    }
-  `;
-  // FIXME: figure out how best to handle a case where the user changed their name from the Admin UI.
-  // Perhaps a subscription once those are implemented?
-  // const authClient = useMemo(() => initApolloClient({ uri: authUri }), []);
-  const { data: { user } = {}, loading } = useQuery(AUTHED_USER_QUERY, {
-    onCompleted: ({ user }) => {
-      if (!user && authService.redirect) {
-        window.location.replace(authService.redirect);
-      }
-    },
-  });
-
-  // Can't fetch user data for some reason. Don't show anything.
-  if (!loading && !user) {
-    return null;
-  }
-
-  return (
-    <Fragment>
-      <UserInfoContainer>
-        <UserIcon>
-          <PersonIcon size={24} />
-        </UserIcon>
-        <div css={{ overflow: "hidden" }}>
-          <Truncate css={{ fontSize: "0.7em" }}>Xin chào,</Truncate>
-          {loading ? (
-            "Loading..."
-          ) : (
-            <Truncate
-              as={Link}
-              to={`#`}
-              css={{ fontWeight: "bold", color: colors.N90 }}
-            >
-              {user.name}
-            </Truncate>
-          )}
-        </div>
-      </UserInfoContainer>
-      <div>
-        <PrimaryNavItem label="Đăng xuất" to={"/admin/signout"}>
-          <SignOutIcon css={{ flexShrink: 0 }} />
-          <span css={{ padding: `0 ${PRIMARY_NAV_GUTTER}px` }}>Đăng xuất</span>
-        </PrimaryNavItem>
-      </div>
-    </Fragment>
-  );
-};
-
+// const UserInfo = ({ authListPath }) => {
+//   const meta = useAdminMeta();
+//   const { authService } = meta;
+//   const AUTHED_USER_QUERY = gql`
+//     query {
+//       user: edumsUser
+//     }
+//   `;
+//   // FIXME: figure out how best to handle a case where the user changed their name from the Admin UI.
+//   // Perhaps a subscription once those are implemented?
+//   // const authClient = useMemo(() => initApolloClient({ uri: authUri }), []);
+//   const { data: { user } = {}, loading } = useQuery(AUTHED_USER_QUERY, {
+//     onCompleted: ({ user }) => {
+//       if (!user && authService.redirect) {
+//         window.location.replace(authService.redirect);
+//       }
+//     },
+//   });
+//
+//   // Can't fetch user data for some reason. Don't show anything.
+//   if (!loading && !user) {
+//     return null;
+//   }
+//
+//   return (
+//     <Fragment>
+//       <UserInfoContainer>
+//         <UserIcon>
+//           <PersonIcon size={24} />
+//         </UserIcon>
+//         <div style={{ overflow: "hidden" }}>
+//           <Truncate style={{ fontSize: "0.7em" }}>Xin chào,</Truncate>
+//           {loading ? (
+//             "Loading..."
+//           ) : (
+//             <Truncate
+//               as={Link}
+//               to={`#`}
+//               style={{ fontWeight: "bold", color: colors.N90 }}
+//             >
+//               {user.name}
+//             </Truncate>
+//           )}
+//         </div>
+//       </UserInfoContainer>
+//       <div>
+//         <PrimaryNavItem label="Đăng xuất" to={"/admin/signout"}>
+//           <SignOutIcon style={{ flexShrink: 0 }} />
+//           <span style={{ padding: `0 ${PRIMARY_NAV_GUTTER}px` }}>Đăng xuất</span>
+//         </PrimaryNavItem>
+//       </div>
+//     </Fragment>
+//   );
+// };
+//
 const GITHUB_PROJECT = "https://github.com/";
 
 const ActionItems = ({ mouseIsOverNav }) => {
@@ -407,11 +411,11 @@ const ActionItems = ({ mouseIsOverNav }) => {
 
   const entries = useMemo(
     () => [
-      // {
-      //   to: signoutPath,
-      //   label: "Đăng xuất",
-      //   icon: SignOutIcon,
-      // },
+      {
+        to: signoutPath,
+        label: "Đăng xuất",
+        icon: SignOutIcon,
+      },
       ...(ENABLE_DEV_FEATURES
         ? [
             {
@@ -438,17 +442,17 @@ const ActionItems = ({ mouseIsOverNav }) => {
   }
 
   return (
-    <div css={{ marginBottom: `${PRIMARY_NAV_GUTTER}px` }}>
+    <div style={{ marginBottom: `${PRIMARY_NAV_GUTTER}px` }}>
       {entries.map(({ label, to, icon: ActionIcon, target }) => (
         <PrimaryNavItem
           key={to}
           {...(target === "_blank" ? { href: to } : { to })}
           target={target}
           mouseIsOverNav={mouseIsOverNav}
-          css={{ display: "flex", alignItems: "center" }}
+          style={{ display: "flex", alignItems: "center" }}
         >
-          <ActionIcon css={{ flexShrink: 0 }} />
-          <span css={{ padding: `0 ${PRIMARY_NAV_GUTTER}px` }}>{label}</span>
+          <ActionIcon style={{ flexShrink: 0 }} />
+          <span style={{ padding: `0 ${PRIMARY_NAV_GUTTER}px` }}>{label}</span>
         </PrimaryNavItem>
       ))}
     </div>
@@ -467,8 +471,11 @@ const PrimaryNavContent = ({ mouseIsOverNav }) => {
 
   return (
     <Inner>
-      {/* <UserInfo authListPath={`users`} /> */}
-      <UserInfo authListPath={getListByKey(authListKey)?.fullPath || "users"} />
+      {authListKey && (
+        <UserInfo
+          authListPath={getListByKey(authListKey).fullPath || "users"}
+        />
+      )}
       <ActionItems mouseIsOverNav={mouseIsOverNav} />
       <PrimaryNavItems
         adminPath={adminPath}

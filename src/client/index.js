@@ -1,7 +1,13 @@
 import React, { Suspense, useMemo } from "react";
 import ReactDOM from "react-dom";
 import { ApolloProvider } from "@apollo/client";
-import { BrowserRouter, Route, Switch, useParams } from "react-router-dom";
+import {
+  BrowserRouter,
+  Redirect,
+  Route,
+  Switch,
+  useParams,
+} from "react-router-dom";
 import { ToastProvider } from "react-toast-notifications";
 import { Global } from "@emotion/core";
 
@@ -26,9 +32,7 @@ import ListNotFoundPage from "./pages/ListNotFound";
 import ItemPage from "./pages/Item";
 import InvalidRoutePage from "./pages/InvalidRoute";
 import NoListsPage from "./pages/NoLists";
-import SignedOutPage from "./pages/Signout";
-import SignInPage from "./pages/Signin";
-import SetTokenPage from "./pages/SetToken";
+import SignoutPage from "./pages/Signout";
 
 const HomePageWrapper = () => {
   const { listKeys } = useAdminMeta();
@@ -79,6 +83,7 @@ const MainPageWrapper = () => {
         children: <Page {...config} />,
       })),
   ];
+
   return (
     <Nav>
       <Suspense fallback={<PageLoading />}>
@@ -97,14 +102,14 @@ const MainPageWrapper = () => {
   );
 };
 
-export const AdminUI = () => {
-  const meta = useAdminMeta();
-  const { adminPath, signinPath, signoutPath, apiPath, hooks } = meta;
+export const OcopAdminUI = () => {
+  const { adminPath, signinPath, signoutPath, apiPath, hooks } = useAdminMeta();
+
   const apolloClient = useMemo(
     () => initApolloClient({ uri: apiPath }),
     [apiPath],
   );
-  console.log("AdminUI", meta);
+
   return (
     <HooksProvider hooks={hooks}>
       <ApolloProvider client={apolloClient}>
@@ -113,13 +118,12 @@ export const AdminUI = () => {
             <Global styles={globalStyles} />
             <BrowserRouter>
               <Switch>
-                <Route exact path={signinPath} children={<SignInPage />} />
-                <Route exact path={signoutPath} children={<SignedOutPage />} />
                 <Route
                   exact
-                  path={"/admin/set-token"}
-                  children={<SetTokenPage />}
+                  path={signinPath}
+                  children={<Redirect to={adminPath} />}
                 />
+                <Route exact path={signoutPath} children={<SignoutPage />} />
                 <Route children={<MainPageWrapper />} />
               </Switch>
             </BrowserRouter>
@@ -133,7 +137,7 @@ export const AdminUI = () => {
 ReactDOM.render(
   <Suspense fallback={null}>
     <AdminMetaProvider>
-      <AdminUI />
+      <OcopAdminUI />
     </AdminMetaProvider>
   </Suspense>,
   document.getElementById("app"),

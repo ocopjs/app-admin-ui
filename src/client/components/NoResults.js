@@ -10,7 +10,7 @@ import { useListPagination } from "../pages/List/dataHooks";
 
 const NoResultsWrapper = ({ children, ...props }) => (
   <div
-    css={{
+    style={{
       alignItems: "center",
       color: colors.N30,
       display: "flex",
@@ -22,7 +22,7 @@ const NoResultsWrapper = ({ children, ...props }) => (
     }}
     {...props}
   >
-    <InfoIcon size={48} css={{ marginBottom: "0.5em" }} />
+    <InfoIcon size={48} style={{ marginBottom: "0.5em" }} />
     {children}
   </div>
 );

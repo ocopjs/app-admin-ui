@@ -13,7 +13,7 @@ import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 const FlexBox = (props) => (
   <div
-    css={{
+    style={{
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -24,10 +24,10 @@ const FlexBox = (props) => (
 );
 
 const Container = (props) => (
-  <FlexBox css={{ minHeight: "100vh" }} {...props} />
+  <FlexBox style={{ minHeight: "100vh" }} {...props} />
 );
 
-const Caption = (props) => <p css={{ fontSize: "1.5em" }} {...props} />;
+const Caption = (props) => <p style={{ fontSize: "1.5em" }} {...props} />;
 
 const SetTokenPage = () => {
   const AUTHED_USER_QUERY = gql`
@@ -61,7 +61,7 @@ const SetTokenPage = () => {
     <Container>
       {loading ? (
         <Fragment>
-          <LoadingIndicator css={{ height: "3em" }} size={12} />
+          <LoadingIndicator style={{ height: "3em" }} size={12} />
           <Caption>Đăng xuất.</Caption>
         </Fragment>
       ) : (
@@ -69,7 +69,7 @@ const SetTokenPage = () => {
           <Animation name="pulse" duration="500ms">
             <CheckIcon
               size={48}
-              css={{ color: "var(--color-text-success) !important" }}
+              style={{ color: "var(--color-text-success) !important" }}
             />
           </Animation>
           <Caption>Hoàn thành đăng nhập.</Caption>

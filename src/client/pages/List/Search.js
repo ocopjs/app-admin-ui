@@ -42,7 +42,7 @@ export default function Search({ isLoading, list }) {
   // webkit, so we apply the attribute to a form tag here.
   return (
     <form
-      css={{ ...elementOffsetStyles, position: "relative" }}
+      style={{ ...elementOffsetStyles, position: "relative" }}
       autoComplete="off"
       onSubmit={onSubmit}
     >
@@ -63,7 +63,7 @@ export default function Search({ isLoading, list }) {
         disabled={isFetching}
       />
       <div
-        css={{
+        style={{
           alignItems: "center",
           color: colors.N30,
           cursor: "pointer",
@@ -90,7 +90,7 @@ export default function Search({ isLoading, list }) {
 const Input = forwardRef((props, ref) => (
   <input
     ref={ref}
-    css={{
+    style={{
       ...uniformHeight,
       background: colors.N10,
       border: 0,

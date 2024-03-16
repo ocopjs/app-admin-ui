@@ -7,7 +7,7 @@ import { gridSize } from "@arch-ui/theme";
 
 const ListDescription = (props) => (
   <FieldDescription
-    css={{
+    style={{
       fontSize: "0.95em",
       lineHeight: 1.6,
       maxWidth: `${CONTAINER_WIDTH}px`,

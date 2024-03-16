@@ -45,7 +45,7 @@ export function MoreDropdown({
     },
     {
       content: isFullWidth ? "Collapse table" : "Expand table",
-      icon: <TableIcon css={{ transform: "rotate(90deg)" }} />,
+      icon: <TableIcon style={{ transform: "rotate(90deg)" }} />,
       isDisabled: !tableToggleIsAvailable,
       onClick: onFullWidthToggle,
     },

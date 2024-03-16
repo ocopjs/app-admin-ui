@@ -15,8 +15,6 @@ import { HooksProvider } from "./providers/Hooks";
 import InvalidRoutePage from "./pages/InvalidRoute";
 import SignoutPage from "./pages/Signout";
 import SigninPage from "./pages/Signin";
-import SignupPage from "./pages/Signup";
-import { CustomChat, FacebookProvider } from "react-facebook";
 
 /*
   NOTE:
@@ -24,20 +22,9 @@ import { CustomChat, FacebookProvider } from "react-facebook";
   for the Admin UI would cause serious problems. It should also be impossible to
   actually do that, so we don't guard against it (yet).
 */
-function FB({ children, appId, pageId }) {
-  console.log(appId, pageId);
-  return appId && pageId ? (
-    <FacebookProvider appId={appId} chatSupport>
-      <CustomChat pageId={pageId} minimized={false} />
-      {children}
-    </FacebookProvider>
-  ) : (
-    children
-  );
-}
-const AdminMain = () => {
-  const { appId, pageId, authStrategy, apiPath, signoutPath, hooks } =
-    useAdminMeta();
+
+const Ocop = () => {
+  const { authStrategy, apiPath, signoutPath, hooks } = useAdminMeta();
 
   const apolloClient = useMemo(
     () => initApolloClient({ uri: apiPath }),
@@ -47,26 +34,20 @@ const AdminMain = () => {
   return (
     <HooksProvider hooks={hooks}>
       <ApolloProvider client={apolloClient}>
-        <FB appId={appId} pageId={pageId}>
-          <ToastProvider>
-            <Global styles={globalStyles} />
-            {authStrategy ? (
-              <BrowserRouter>
-                <Switch>
-                  <Route exact path={signoutPath} children={<SignoutPage />} />
-                  <Route
-                    exact
-                    path={"/admin/signup"}
-                    children={<SignupPage />}
-                  />
-                  <Route children={<SigninPage />} />
-                </Switch>
-              </BrowserRouter>
-            ) : (
-              <InvalidRoutePage />
-            )}
-          </ToastProvider>
-        </FB>
+        <ToastProvider>
+          <Global styles={globalStyles} />
+
+          {authStrategy ? (
+            <BrowserRouter>
+              <Switch>
+                <Route exact path={signoutPath} children={<SignoutPage />} />
+                <Route children={<SigninPage />} />
+              </Switch>
+            </BrowserRouter>
+          ) : (
+            <InvalidRoutePage />
+          )}
+        </ToastProvider>
       </ApolloProvider>
     </HooksProvider>
   );
@@ -75,7 +56,7 @@ const AdminMain = () => {
 ReactDOM.render(
   <Suspense fallback={null}>
     <AdminMetaProvider>
-      <AdminMain />
+      <Ocop />
     </AdminMetaProvider>
   </Suspense>,
   document.getElementById("app"),

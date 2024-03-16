@@ -79,7 +79,7 @@ const AnimateHeight = ({
 
   return (
     <div
-      css={{
+      style={{
         height,
         ...(isTransitioning
           ? {

@@ -46,7 +46,7 @@ export function Search({ list }) {
   // webkit, so we apply the attribute to a form tag here.
   return formIsVisible ? (
     <form
-      css={{ display: "inline-block", position: "relative" }}
+      style={{ display: "inline-block", position: "relative" }}
       autoComplete="off"
       onSubmit={handleSubmit}
     >
@@ -66,7 +66,7 @@ export function Search({ list }) {
         ref={inputRef}
       />
       <div
-        css={{
+        style={{
           alignItems: "center",
           color: colors.N30,
           cursor: "pointer",
@@ -113,7 +113,7 @@ const slideOpen = keyframes`
 const Input = forwardRef((props, ref) => (
   <input
     ref={ref}
-    css={{
+    style={{
       ...uniformHeight,
       animation: `${slideOpen} 180ms cubic-bezier(0.2, 0, 0, 1)`,
       background: colors.N10,

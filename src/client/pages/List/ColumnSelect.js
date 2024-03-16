@@ -15,7 +15,7 @@ export default function ColumnPopout({ target }) {
 
   return (
     <Popout target={target} headerTitle="Columns">
-      <div id={cypresSelectId} css={{ padding: POPOUT_GUTTER }}>
+      <div id={cypresSelectId} style={{ padding: POPOUT_GUTTER }}>
         <FieldSelect
           fields={list.fields}
           onChange={handleColumnChange}

@@ -5,7 +5,7 @@ import { LoadingIndicator } from "@arch-ui/loading";
 export default function PageLoading() {
   return (
     <div
-      css={{
+      style={{
         height: 200,
         display: "flex",
         alignItems: "center",

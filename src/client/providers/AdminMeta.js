@@ -2,16 +2,13 @@
 
 import List from "../classes/List";
 import { preloadViews, readViews, views } from "../FIELD_TYPES";
+
 import React, { createContext, useContext } from "react";
 
 const { __pages__: pageViews, __hooks__: hookView, ...listViews } = views;
 
 // TODO: Pull this off `window.X` to support server side permission queries
 const {
-  headless = [],
-  appId,
-  pageId,
-  authService,
   adminPath,
   apiPath,
   graphiqlPath,
@@ -24,9 +21,6 @@ const {
   name,
   ...customMeta
 } = OCOP_ADMIN_META;
-headless?.map((key) => {
-  delete lists[key];
-});
 
 const AdminMetaContext = createContext();
 
@@ -48,7 +42,6 @@ const resolveCustomPages = (pages) => {
 };
 
 export const AdminMetaProvider = ({ children }) => {
-  console.log(views);
   // TODO: Permission query to see which lists to provide
   const listsByKey = {};
   const listsByPath = {};
@@ -88,13 +81,6 @@ export const AdminMetaProvider = ({ children }) => {
         singular,
       },
     ]) => {
-      // console.log(key, fields);
-
-      fields = fields.filter((field) => {
-        const ignore = headless?.find((ignore) => ignore === field?.ref);
-        return !ignore;
-      });
-
       const list = new List(
         {
           access,
@@ -129,15 +115,12 @@ export const AdminMetaProvider = ({ children }) => {
   const adminMetaPages = pages || [];
 
   const value = {
-    // appId,
-    // pageId,
-    authService,
     adminPath,
     apiPath,
     graphiqlPath,
     signinPath,
     signoutPath,
-    // authStrategy,
+    authStrategy,
     name,
     listKeys,
     getListByKey,

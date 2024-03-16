@@ -3,7 +3,7 @@ import raf from "raf-schd";
 
 import { useKeyboardManager } from "../providers/KeyboardShortcuts";
 
-const LS_KEY = "KEYSTONE_NAVIGATION_STATE";
+const LS_KEY = "OCOP_NAVIGATION_STATE";
 const DEFAULT_STATE = { isCollapsed: false, width: 280 };
 const MIN_WIDTH = 140;
 const MAX_WIDTH = 800;

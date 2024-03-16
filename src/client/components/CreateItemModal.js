@@ -230,7 +230,7 @@ const CreateItemModal = ({
       }
     >
       <div
-        css={{
+        style={{
           marginBottom: gridSize,
           marginTop: gridSize,
         }}

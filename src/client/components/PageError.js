@@ -13,7 +13,7 @@ export default function PageError({
   return (
     <Container>
       <div
-        css={{
+        style={{
           color: colors.N30,
           fontSize: 24,
           padding: "2em 1em",
