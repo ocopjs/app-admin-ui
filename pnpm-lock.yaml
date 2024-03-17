@@ -99,8 +99,8 @@ dependencies:
     specifier: ^10.1.1
     version: 10.3.1(react@17.0.2)
   '@ocopjs/field-views-loader':
-    specifier: ^1.0.0
-    version: 1.0.0
+    specifier: ^1.0.2
+    version: 1.0.2
   '@ocopjs/utils':
     specifier: ^1.0.5
     version: 1.0.5
@@ -2307,11 +2307,11 @@ packages:
       fastq: 1.17.1
     dev: true
 
-  /@ocopjs/field-views-loader@1.0.0:
-    resolution: {integrity: sha512-q1czv/Rr9OQdcNRhpsMC8hvOsBmm4pUwsm2XQh+LwBIWDOX+YfoTAELgQGboFT3JJbLircRjnr4bV6anDXuRfg==}
+  /@ocopjs/field-views-loader@1.0.2:
+    resolution: {integrity: sha512-nJQ332VQPiYcrXODvglyn3usiEtC4bJ0T9SjeAV/QNfUv4H3RrRxu0yAM5DbqJxxJ5UhdraZOyaqZWmYD25GQg==}
     engines: {node: '16'}
     dependencies:
-      loader-utils: 3.2.1
+      loader-utils: 2.0.4
     dev: false
 
   /@ocopjs/utils@1.0.5:
@@ -6332,11 +6332,6 @@ packages:
       big.js: 5.2.2
       emojis-list: 3.0.0
       json5: 2.2.3
-    dev: false
-
-  /loader-utils@3.2.1:
-    resolution: {integrity: sha512-ZvFw1KWS3GVyYBYb7qkmRM/WwL2TQQBxgCK62rlvm4WpVQ23Nb4tYjApUlfjrEGvOs7KHEsmyUn75OHZrJMWPw==}
-    engines: {node: '>= 12.13.0'}
     dev: false
 
   /locate-path@2.0.0:

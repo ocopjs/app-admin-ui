@@ -4,8 +4,6 @@ const path = require("path");
 
 const { enableDevFeatures, mode } = require("./env");
 
-const clientDirectory = path.resolve(__dirname, "..", "client");
-
 module.exports = function ({ adminMeta, adminViews, entry, outputPath }) {
   const templatePlugin = new HtmlWebpackPlugin({
     title: "OcopJS",
@@ -18,15 +16,20 @@ module.exports = function ({ adminMeta, adminViews, entry, outputPath }) {
     IS_PUBLIC_BUNDLE: entry === "public",
     OCOP_ADMIN_META: JSON.stringify(adminMeta),
   });
-
   const rules = [
     {
-      test: /\.(js|ts|tsx)$/,
+      test: /\.(mjs|js|ts|tsx)$/,
       exclude: (pathname) => {
-        return (
-          pathname.includes("node_modules") &&
-          !pathname.startsWith(clientDirectory)
-        );
+        const pkgs = [
+          "@ocopjs/app-admin-ui",
+          "@ocopjs/fields",
+          "@ocopjs/adapter-mongoose",
+          "@ocopjs/common",
+        ];
+        const some = pkgs.find((name) => pathname.includes(name));
+        if (some) return false;
+
+        return pathname.includes("node_modules");
       },
       use: [
         {
@@ -69,7 +72,6 @@ module.exports = function ({ adminMeta, adminViews, entry, outputPath }) {
     include: /node_modules/,
     type: "javascript/auto",
   });
-
   const entryPath = `./${entry}.js`;
   return {
     mode,
