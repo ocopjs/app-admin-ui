@@ -1,7 +1,7 @@
 {
   "name": "@ocopjs/app-admin-ui",
   "description": "OcopJS - Admin UI App for management system. 🇻🇳",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "ocopjs",
   "scripts": {
     "format": "prettier --write \"**/*.{ts,tsx,md,js}\"",
